@@ -1,0 +1,8 @@
+{
+  "debugMode": true,
+  "dbUrl": "localhost",
+  "dbPort": 5432,
+  "user": "bag_user",
+  "password": "bag4all",
+  "dbName": "bag"
+}

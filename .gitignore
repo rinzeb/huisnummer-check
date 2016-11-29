@@ -1,0 +1,7 @@
+node_modules
+dist
+typings
+data
+out
+*.csv
+bin/
