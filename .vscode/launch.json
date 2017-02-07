@@ -1,46 +1,42 @@
 {
   "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Launch",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceRoot}\\src\\run.ts",
-      "stopOnEntry": false,
-      "args": [--help],
-      "cwd": "${workspaceRoot}",
-      "preLaunchTask": null,
-      "runtimeExecutable": null,
-      "runtimeArgs": [
-        "--nolazy"
-      ],
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "console": "internalConsole",
-      "sourceMaps": true,
-      "outDir": "${workspaceRoot}\\dist"
+  "configurations": [{
+    "name": "Launch",
+    "type": "node",
+    "request": "launch",
+    "program": "${workspaceRoot}\\src\\run.ts",
+    "stopOnEntry": false,
+    "args": ["--file=.\\inputdata\\Gevalideerd2016.xlsx", "--pc6=Postcode", "--nr=Huisnr", "--separator=;", "--maxAddresses=1"],
+    "cwd": "${workspaceRoot}",
+    "preLaunchTask": null,
+    "runtimeExecutable": null,
+    "runtimeArgs": [
+      "--nolazy"
+    ],
+    "env": {
+      "NODE_ENV": "development"
     },
-    {
-      "name": "Attach",
-      "type": "node",
-      "request": "attach",
-      "port": 5858,
-      "address": "localhost",
-      "restart": false,
-      "sourceMaps": false,
-      "outFiles": [],
-      "localRoot": "${workspaceRoot}",
-      "remoteRoot": null
-    },
-    {
-      "name": "Attach to Process",
-      "type": "node",
-      "request": "attach",
-      "processId": "${command.PickProcess}",
-      "port": 5858,
-      "sourceMaps": false,
-      "outFiles": []
-    }
-  ]
+    "console": "internalConsole",
+    "sourceMaps": true,
+    "outDir": "${workspaceRoot}\\dist"
+  }, {
+    "name": "Attach",
+    "type": "node",
+    "request": "attach",
+    "port": 5858,
+    "address": "localhost",
+    "restart": false,
+    "sourceMaps": false,
+    "outFiles": [],
+    "localRoot": "${workspaceRoot}",
+    "remoteRoot": null
+  }, {
+    "name": "Attach to Process",
+    "type": "node",
+    "request": "attach",
+    "processId": "${command.PickProcess}",
+    "port": 5858,
+    "sourceMaps": false,
+    "outFiles": []
+  }]
 }

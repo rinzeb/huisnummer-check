@@ -8,6 +8,7 @@
     "async": "registry:npm/async#2.0.1+20160815105832",
     "chokidar": "registry:npm/chokidar#1.6.0+20160817083815",
     "pg": "registry:npm/pg#6.0.2+20160802225752",
-    "pretty-data": "registry:npm/pretty-data#0.40.0+20160723033700"
+    "pretty-data": "registry:npm/pretty-data#0.40.0+20160723033700",
+    "xlsx": "github:rinzeb/DefinitelyTyped/xlsx/index.d.ts#9db4204e1b6285529308bf075ac3e0459f0a3355"
   }
 }
