@@ -176,7 +176,7 @@ ORDER BY verblijfsobject.identificatie, documentdatum DESC LIMIT ${this.options.
 
   private processData(data: string, cb: Function) {
     let rows = data.split('\r\n');
-    if (rows.length < 2) {
+    if (rows.length <= 2) {
       rows = data.split('\n');
     }
     log(`Data: ${rows.length} rows`);
