@@ -24,6 +24,11 @@ const config: IConfig = require(path.join(process.cwd(), 'config.json')),
   prettyXml = pd.pd,
   now = new Date();
 
+export interface IResults {
+  results: string[];
+  missing: string[];
+}
+
 export class Router {
   private pg: any;
   private pgPool: pg.Pool;
@@ -122,7 +127,7 @@ ORDER BY verblijfsobject.identificatie, documentdatum DESC LIMIT ${this.options.
         FS: ';',
         RS: '\n'
       });
-      this.processData(csvContent, (results) => {
+      this.processData(csvContent, (results: IResults) => {
         this.writeResults(results, sheetName, () => {
           log(`------------------------------------------------`);
           callback();
@@ -151,19 +156,25 @@ ORDER BY verblijfsobject.identificatie, documentdatum DESC LIMIT ${this.options.
     });
   }
 
-  private writeResults(results: any[], fileName: string, cb: Function) {
+  private writeResults(results: IResults, fileName: string, cb: Function) {
     if (!results) {
       cb();
       return;
     }
+    this.writeFile(results.results, fileName, () => {
+      this.writeFile(results.missing, `${fileName}-missing`, cb);
+    });
+  }
+
+  private writeFile(data: any[], fileName: string, cb: Function) {
     fs.stat(this.options.outDir, (err, stats: fs.Stats) => {
       if (err || !stats || !stats.isDirectory()) {
         log(`Not a valid directory. Creating ${this.options.outDir}`);
         fs.mkdirSync(this.options.outDir);
       }
       let file = `${path.join(this.options.outDir, fileName)}.csv`;
-      log(`Writing ${results.length} results to ${file}...`);
-      let content = results.join('\r\n');
+      log(`Writing ${data.length} results to ${file}...`);
+      let content = data.join('\r\n');
 
       fs.writeFile(file, content, {
         encoding: this.options.charset
@@ -198,6 +209,7 @@ ORDER BY verblijfsobject.identificatie, documentdatum DESC LIMIT ${this.options.
     }
 
     let results: string[] = [];
+    let missing: string[] = [];
     let rowsProcessed: number = 0;
     let rowsFailed: number = 0;
     let rowsNotFound: number = 0;
@@ -222,6 +234,7 @@ ORDER BY verblijfsobject.identificatie, documentdatum DESC LIMIT ${this.options.
               results.push(_.values(result).join(';'));
             });
           } else {
+            missing.push(`${cols[0]};${cols[1]};${cols[pc6Row]};${+cols[nrRow]};https://www.openstreetmap.org/search?query=${cols[pc6Row]}, ${cols[nrRow]};https://bagviewer.kadaster.nl/lvbag/bag-viewer/index.html#?postcode=${cols[pc6Row]}&huisnummer=${cols[nrRow]}`);
             rowsNotFound += 1;
           }
           rowsProcessed += 1;
@@ -239,7 +252,7 @@ ORDER BY verblijfsobject.identificatie, documentdatum DESC LIMIT ${this.options.
         cb();
       } else {
         log(`${rowsProcessed} rows have been processed successfully. ${rowsNotFound} addresses were not found, ${rowsFailed} datarows were invalid.`);
-        cb(results);
+        cb({results: results, missing: missing});
       }
     });
   }
